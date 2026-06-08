@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMTBL by M3TA</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <h1>TMTBL</h1>
+  <div class="header-actions">
+    <!-- <button class="btn btn-ghost btn-sm" onclick="openImportExport()">Import / Export</button> -->
+    <button class="btn btn-primary btn-sm" onclick="openAddAct(null)">+ Act hinzufügen</button>
+    <button class="btn btn-primary btn-sm" title="Tage verwalten" onclick="toggleDayManager()">+ Tag hinzufügen</button>
+  </div>
+</header>
+
+<div class="tabs" id="stageTabs">
+  <button class="tab-add" title="Bühne hinzufügen" onclick="addStage()">+</button>
+
+</div>
+
+<div class="controls">
+  <div class="control-group">
+    <label>Zeitstrahl von</label>
+    <input type="time" id="timeStart" value="14:00" onchange="onTimeRangeChange()">
+  </div>
+  <div class="control-group">
+    <label>bis</label>
+    <input type="time" id="timeEnd" value="06:00" onchange="onTimeRangeChange()">
+  </div>
+  <div class="control-group" style="margin-left:auto;">
+    <label id="totalHoursLabel"></label>
+  </div>
+</div>
+
+<div id="dayManagerPanel" style="display:none;">
+  <div class="day-manager">
+    <h3>Tage verwalten</h3>
+    <div class="day-list" id="dayList"></div>
+    <button class="btn btn-ghost btn-sm" onclick="addDay()">+ Tag hinzufügen</button>
+  </div>
+</div>
+
+<div class="timetable-wrapper">
+  <div id="timetable" class="timetable"></div>
+</div>
+
+<!-- Act Modal -->
+<div class="modal-backdrop hidden" id="actModal">
+  <div class="modal">
+    <h2 id="modalTitle">Act hinzufügen</h2>
+    <div class="form-grid">
+      <div class="form-field">
+        <label>Name</label>
+        <input type="text" id="actName">
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Startzeit *</label>
+          <input type="time" id="actStart" step="1800">
+        </div>
+        <div class="form-field">
+          <label>Länge (Minuten) *</label>
+          <input type="number" id="actDuration" value="60" min="30" max="360" step="30">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Bühne</label>
+          <select id="actStage"></select>
+        </div>
+        <div class="form-field">
+          <label>Tag</label>
+          <select id="actDay"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Genre</label>
+          <input type="text" id="actGenre">
+        </div>
+        <div class="form-field">
+          <label>Farbe</label>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <input type="color" id="actColor" value="#c8f050">
+            <span id="colorPreview" class="color-preview" style="background-color: #c8f050;"></span>
+          </div>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Notizen</label>
+        <textarea id="actNotes" rows="2"></textarea>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Abbrechen</button>
+      <button class="btn btn-danger btn-sm" id="deleteBtn" style="display:none;" onclick="deleteCurrentAct()">Löschen</button>
+      <button class="btn btn-primary" onclick="saveAct()">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import/Export Modal -->
+<div class="modal-backdrop hidden" id="ieModal">
+  <div class="modal">
+    <h2>Import / Export</h2>
+    <div><div class="export-area" id="exportData"></div><button class="btn btn-ghost btn-sm" onclick="copyExport()">Kopieren</button></div>
+    <div style="margin-top:1rem;"><textarea id="importData" style="width:100%;height:80px;font-family:monospace;"></textarea><button class="btn btn-primary btn-sm" onclick="importData()">Importieren</button></div>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeIEModal()">Schließen</button></div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
